@@ -1,18 +1,26 @@
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
+import Category from './Category'
+import Post from './Post'
 
 export default class Product extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
   @column()
-  public uid: number
+  public uuid: string
 
   @column()
-  public postId: number
+  public postId: string
+
+  @belongsTo(() => Post, { foreignKey: 'postId' })
+  public post: BelongsTo<typeof Post>
 
   @column()
-  public categoryId: number
+  public categoryId: string
+
+  @belongsTo(() => Category, { foreignKey: 'categoryId' })
+  public category: BelongsTo<typeof Category>
 
   @column()
   public title: string
@@ -36,13 +44,13 @@ export default class Product extends BaseModel {
   public discountType: number
 
   @column()
-  public discountDuration: object
+  public discountDuration: any[] // Adjust the type according to your requirements
 
   @column()
-  public size: string[] | null
+  public size: any[] // Adjust the type according to your requirements
 
   @column()
-  public color: string[] | null
+  public color: any[] // Adjust the type according to your requirements
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

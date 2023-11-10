@@ -1,7 +1,7 @@
 import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
 
-export default class User extends BaseModel {
+export default class Coupon extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
@@ -9,19 +9,22 @@ export default class User extends BaseModel {
   public uuid: string
 
   @column()
-  public username: string
+  public code: string
 
   @column()
-  public email: string
+  public discount: number
 
   @column()
-  public password: string
+  public discountType: number
+
+  @column.dateTime()
+  public startDate: DateTime
+
+  @column.dateTime()
+  public expirationDate: DateTime
 
   @column()
-  public type: number
-
-  @column({ columnName: 'remember_me_token' })
-  public rememberMeToken: string | null
+  public isActive: boolean
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

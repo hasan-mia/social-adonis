@@ -1,16 +1,13 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'replies'
+  protected tableName = 'conversations'
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
-      table.integer('uid').unique()
-      table.integer('comment_id').unsigned().references('uid').inTable('comments')
-      table.integer('user_id').unsigned().references('uid').inTable('users')
-      table.text('text')
-      table.jsonb('notifications')
+      table.increments('id').primary()
+      table.uuid('uuid').unique()
+
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

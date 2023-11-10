@@ -1,15 +1,19 @@
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
+import Post from './Post'
 
 export default class Image extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
   @column()
-  public uid: number
+  public uuid: string
 
   @column()
-  public postId: number
+  public postId: string
+
+  @belongsTo(() => Post, { foreignKey: 'postId' })
+  public post: BelongsTo<typeof Post>
 
   @column()
   public imageUrls: string[]

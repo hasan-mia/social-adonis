@@ -1,17 +1,18 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'user_transactions'
+  protected tableName = 'coupons'
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
-      table.integer('uid').unique()
-      table.integer('user_id').unsigned().references('uid').inTable('users')
-      table.timestamp('transaction_date').notNullable()
-      table.double('amount')
-      table.string('payment_status')
-      table.integer('payment_method_id').unsigned().references('uid').inTable('payments')
+      table.increments('id').primary()
+      table.uuid('uuid').unique()
+      table.string('code').unique()
+      table.double('discount')
+      table.integer('discount_type').defaultTo(0) // 0 -> amount , 1-> perchantage
+      table.dateTime('start_date')
+      table.dateTime('expiration_date')
+      table.boolean('is_active').defaultTo(false)
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

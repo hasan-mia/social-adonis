@@ -1,21 +1,33 @@
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
+import Order from './Order'
+import Payment from './Payment'
+import User from './User'
 
 export default class Transaction extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
   @column()
-  public uid: number
+  public uuid: number
 
   @column()
-  public userId: number
+  public userId: string
+
+  @belongsTo(() => User, { foreignKey: 'userId' })
+  public user: BelongsTo<typeof User>
 
   @column()
-  public orderCode: number
+  public orderCode: string
+
+  @belongsTo(() => Order, { foreignKey: 'orderCode' })
+  public order: BelongsTo<typeof Order>
 
   @column()
-  public paymentMethodId: number
+  public paymentMethodId: string
+
+  @belongsTo(() => Payment, { foreignKey: 'paymentMethodId' })
+  public paymentMethod: BelongsTo<typeof Payment>
 
   @column.dateTime({ autoCreate: true })
   public transactionDate: DateTime

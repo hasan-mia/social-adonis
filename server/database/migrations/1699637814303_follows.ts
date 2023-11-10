@@ -1,17 +1,25 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'orders'
+  protected tableName = 'follows'
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
-      table.integer('uid').unique()
-      table.integer('user_id').unsigned().references('uid').inTable('users')
-      table.integer('product_id').unsigned().references('uid').inTable('products')
-      table.timestamp('order_date').notNullable()
-      table.double('total_amount')
-      table.integer('order_status')
+      table.increments('id').primary()
+      table.uuid('uuid').unique()
+      table
+        .uuid('follower_id')
+        .references('uuid')
+        .inTable('users')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE')
+      table
+        .uuid('following_id')
+        .references('uuid')
+        .inTable('users')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE')
+      table.json('notifications')
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

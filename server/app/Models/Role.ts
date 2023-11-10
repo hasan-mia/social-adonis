@@ -1,26 +1,18 @@
 import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
 
-export default class UserTransaction extends BaseModel {
+export default class Role extends BaseModel {
   @column({ isPrimary: true })
   public id: number
-  @column()
-  public uid: number
 
   @column()
-  public userId: number
-
-  @column.dateTime({ autoCreate: true })
-  public transactionDate: DateTime
+  public uuid: string
 
   @column()
-  public amount: number
+  public roleName: string
 
   @column()
-  public paymentStatus: string
-
-  @column()
-  public paymentMethodId: number
+  public description: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

@@ -1,15 +1,11 @@
 import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
-import Chat from './Chat'
 import Comment from './Comment'
-import Follow from './Follow'
-import Order from './Order'
 import Post from './Post'
-import Reaction from './Reaction'
 import Reply from './Reply'
 import User from './User'
 
-export default class Notification extends BaseModel {
+export default class Reaction extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
@@ -17,13 +13,10 @@ export default class Notification extends BaseModel {
   public uuid: string
 
   @column()
-  public userId: string
-
-  @belongsTo(() => User, { foreignKey: 'userId' })
-  public user: BelongsTo<typeof User>
+  public reactionType: string
 
   @column()
-  public notificationType: number
+  public notifications: any // Adjust the type according to your Notification model
 
   @column()
   public postId: string
@@ -44,31 +37,10 @@ export default class Notification extends BaseModel {
   public reply: BelongsTo<typeof Reply>
 
   @column()
-  public chatId: string
+  public userId: string
 
-  @belongsTo(() => Chat, { foreignKey: 'chatId' })
-  public chat: BelongsTo<typeof Chat>
-
-  @column()
-  public orderId: string
-
-  @belongsTo(() => Order, { foreignKey: 'orderId' })
-  public order: BelongsTo<typeof Order>
-
-  @column()
-  public reactionId: string
-
-  @belongsTo(() => Reaction, { foreignKey: 'reactionId' })
-  public reaction: BelongsTo<typeof Reaction>
-
-  @column()
-  public followId: string
-
-  @belongsTo(() => Follow, { foreignKey: 'followId' })
-  public follow: BelongsTo<typeof Follow>
-
-  @column()
-  public isRead: boolean
+  @belongsTo(() => User, { foreignKey: 'userId' })
+  public user: BelongsTo<typeof User>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

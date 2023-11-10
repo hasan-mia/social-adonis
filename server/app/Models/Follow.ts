@@ -1,18 +1,25 @@
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
+import User from './User'
 
 export default class Follow extends BaseModel {
-  @column({ isPrimary: true })
-  public id: number
+  @column()
+  public uuid: string
 
   @column()
-  public uid: number
+  public followerId: string
+
+  @belongsTo(() => User, { foreignKey: 'followerId' })
+  public follower: BelongsTo<typeof User>
 
   @column()
-  public followerId: number
+  public followingId: string
+
+  @belongsTo(() => User, { foreignKey: 'followingId' })
+  public following: BelongsTo<typeof User>
 
   @column()
-  public followingId: number
+  public notifications: any
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

@@ -1,8 +1,9 @@
 import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
 import User from './User'
+import Role from './Role'
 
-export default class Payment extends BaseModel {
+export default class UserRole extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
@@ -16,16 +17,10 @@ export default class Payment extends BaseModel {
   public user: BelongsTo<typeof User>
 
   @column()
-  public cardNumber: string
+  public roleId: string
 
-  @column()
-  public cardHolderName: string
-
-  @column()
-  public expirationDate: string
-
-  @column()
-  public cvv: string
+  @belongsTo(() => Role, { foreignKey: 'roleId' })
+  public role: BelongsTo<typeof Role>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

@@ -5,10 +5,16 @@ export default class extends BaseSchema {
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
-      table.integer('uid').unique()
-      table.integer('post_id').unsigned().references('uid').inTable('posts')
-      table.specificType('video_url', 'VARCHAR ARRAY')
+      table.increments('id').primary()
+      table.uuid('uuid').unique()
+      table
+        .uuid('post_id')
+        .references('uuid')
+        .inTable('posts')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE')
+      table.json('video_url')
+
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

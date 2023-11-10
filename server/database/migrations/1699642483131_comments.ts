@@ -5,12 +5,23 @@ export default class extends BaseSchema {
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
-      table.integer('uid').unique()
-      table.integer('post_id').unsigned().references('uid').inTable('posts')
-      table.integer('user_id').unsigned().references('uid').inTable('users')
+      table.increments('id').primary()
+      table.uuid('uuid').unique()
+      table
+        .uuid('post_id')
+        .references('uuid')
+        .inTable('posts')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE')
+      table
+        .uuid('user_id')
+        .references('uuid')
+        .inTable('users')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE')
       table.text('text')
-      table.jsonb('notifications')
+      table.json('notifications')
+
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

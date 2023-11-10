@@ -2,7 +2,7 @@ import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
 import User from './User'
 
-export default class Payment extends BaseModel {
+export default class UserProfile extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
@@ -16,16 +16,28 @@ export default class Payment extends BaseModel {
   public user: BelongsTo<typeof User>
 
   @column()
-  public cardNumber: string
+  public firstName: string
 
   @column()
-  public cardHolderName: string
+  public lastName: string
 
   @column()
-  public expirationDate: string
+  public phone: string
 
   @column()
-  public cvv: string
+  public birthDate: string
+
+  @column()
+  public relationship: number
+
+  @column()
+  public verify: boolean
+
+  @column()
+  public active: boolean
+
+  @column()
+  public online: boolean
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

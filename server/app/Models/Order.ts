@@ -1,18 +1,26 @@
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
+import Product from './Product'
+import User from './User'
 
 export default class Order extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
   @column()
-  public uid: number
+  public uuid: string
 
   @column()
-  public userId: number
+  public userId: string
+
+  @belongsTo(() => User, { foreignKey: 'userId' })
+  public user: BelongsTo<typeof User>
 
   @column()
-  public productId: number
+  public productId: string
+
+  @belongsTo(() => Product, { foreignKey: 'productId' })
+  public product: BelongsTo<typeof Product>
 
   @column.dateTime({ autoCreate: true })
   public orderDate: DateTime
@@ -22,6 +30,9 @@ export default class Order extends BaseModel {
 
   @column()
   public orderStatus: number
+
+  @column()
+  public notifications: any
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
