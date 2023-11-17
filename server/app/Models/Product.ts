@@ -1,5 +1,6 @@
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, beforeCreate, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
+import { v4 as uuidv4 } from 'uuid'
 import Category from './Category'
 import Post from './Post'
 
@@ -57,4 +58,10 @@ export default class Product extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  // Add this method to generate uuid before creating a product
+  @beforeCreate()
+  public static async generateUuid(product: Product) {
+    product.uuid = uuidv4()
+  }
 }

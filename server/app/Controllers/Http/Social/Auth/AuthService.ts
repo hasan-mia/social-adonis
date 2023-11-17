@@ -3,7 +3,6 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import AuthQuery from './AuthQuery'
 
 export default class AuthService {
-  public from_email = 'hasanrafi69@gmail.com'
   public authQuery: AuthQuery
 
   constructor() {
@@ -13,10 +12,18 @@ export default class AuthService {
   public async signUp(ctx: HttpContextContract, payload: any) {
     try {
       // crete user
-      await this.authQuery.signup(payload)
+      const user = await this.authQuery.signup(payload)
+
+      if (!user) return ctx.response.badRequest({ errors: [{ message: 'Invalid credentials' }] })
+
+      // Create session // token
+      // const token = await ctx.auth.use('api').attempt(user.email, user.uuid)
+      // await ctx.auth.login(user)
+      // await ctx.auth.use('web').attempt(uid, password)
 
       return ctx.response.status(201).send({
         message: 'Sign-up successful',
+        // token: token,
       })
     } catch (error) {
       return ctx.response.status(422).send({ errors: error.messages })
@@ -40,14 +47,12 @@ export default class AuthService {
         return ctx.response.badRequest({ errors: [{ message: 'Invalid credentials' }] })
       }
 
-      // Create session
-      // await ctx.auth.use('web').login(user)
+      // Create session // token
+      // const token = await ctx.auth.use('api').attempt(user.email, user.uuid)
+      // await ctx.auth.login(user)
       // await ctx.auth.use('web').attempt(uid, password)
-      // const token = await ctx.auth.use('web').attempt(user.id.toString(), { expiresIn: '24hours' })
 
-      return ctx.response.status(201).send({
-        errors: [{ message: 'Sign-in successful' }],
-      })
+      return ctx.response.status(201).send({ message: 'Sign-in successful' })
     } catch (error) {
       return ctx.response.status(422).send({ errors: error.messages })
     }

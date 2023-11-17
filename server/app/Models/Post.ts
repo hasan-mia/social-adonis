@@ -1,5 +1,6 @@
+import { BaseModel, BelongsTo, beforeCreate, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { v4 as uuidv4 } from 'uuid'
 import User from './User'
 
 export default class Post extends BaseModel {
@@ -38,4 +39,10 @@ export default class Post extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  // Add this method to generate uuid before creating a post
+  @beforeCreate()
+  public static async generateUuid(post: Post) {
+    post.uuid = uuidv4()
+  }
 }

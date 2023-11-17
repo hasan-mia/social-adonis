@@ -1,5 +1,6 @@
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, beforeCreate, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
+import { v4 as uuidv4 } from 'uuid'
 import Post from './Post'
 
 export default class Video extends BaseModel {
@@ -23,4 +24,10 @@ export default class Video extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  // Add this method to generate uuid before creating a video
+  @beforeCreate()
+  public static async generateUuid(video: Video) {
+    video.uuid = uuidv4()
+  }
 }

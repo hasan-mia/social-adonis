@@ -1,5 +1,6 @@
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, beforeCreate, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
+import { v4 as uuidv4 } from 'uuid'
 import Order from './Order'
 import Payment from './Payment'
 import User from './User'
@@ -43,4 +44,10 @@ export default class Transaction extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  // Add this method to generate uuid before creating a transaction
+  @beforeCreate()
+  public static async generateUuid(transaction: Transaction) {
+    transaction.uuid = uuidv4()
+  }
 }

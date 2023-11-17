@@ -1,7 +1,8 @@
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, beforeCreate, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
-import User from './User'
+import { v4 as uuidv4 } from 'uuid'
 import Role from './Role'
+import User from './User'
 
 export default class UserRole extends BaseModel {
   @column({ isPrimary: true })
@@ -27,4 +28,10 @@ export default class UserRole extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  // Add this method to generate uuid before creating a userRole
+  @beforeCreate()
+  public static async generateUuid(userRole: UserRole) {
+    userRole.uuid = uuidv4()
+  }
 }

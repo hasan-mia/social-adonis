@@ -3,7 +3,7 @@ import { rules, schema } from '@ioc:Adonis/Core/Validator'
 export default class AuthValidator {
   public messages = {
     'username.unique': 'Username already in use',
-    'username.exists': 'Invalid email username',
+    'username.exists': 'Invalid username',
     'email.required': 'Email is required',
     'email.unique': 'Email already in use',
     'email.exists': 'Invalid email address',
@@ -34,17 +34,11 @@ export default class AuthValidator {
   //**************** Sign In *********************/
   public async signInSchema(ctx: HttpContextContract) {
     const userSchema = schema.create({
-      // email: schema.string({}, [
-      //   rules.normalizeEmail({}),
-      //   rules.unique({ table: 'users', column: 'email' }),
-      // ]),
-      // username: schema.string.optional({ trim: true }, [
-      //   rules.unique({ table: 'users', column: 'username', caseInsensitive: true }),
-      // ]),
       uid: schema.string({ trim: true }),
       password: schema.string([rules.minLength(8), rules.maxLength(16)]),
     })
     const msg = {
+      'uid.required': 'Email or username is required',
       'password.required': 'Password is required',
       'password.minLength': 'Password must be at least 6 charecters long',
       'password.maxLength': 'Password must be at less or equal 16 charecters long',
