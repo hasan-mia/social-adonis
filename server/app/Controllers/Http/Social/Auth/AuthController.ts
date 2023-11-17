@@ -18,22 +18,9 @@ export default class AuthController {
   }
 
   //**************** Sign In *********************/
-  public async signin({ request, response, auth, session }: HttpContextContract) {
-    // await this.authValidator.signInSchema(ctx)
-    // return this.authService.signIn(ctx)
-
-    // grab uid and password values off request body
-    const { uid, password } = request.only(['uid', 'password'])
-    try {
-      // attempt to login
-      await auth.attempt(uid, password)
-    } catch (error) {
-      // if login fails, return vague form message and redirect back
-      session.flash('form', 'Your username, email, or password is incorrect')
-      return response.redirect().back()
-    }
-    // otherwise, redirect to home page
-    return response.redirect('/')
+  public async signin(ctx: HttpContextContract) {
+    await this.authValidator.signInSchema(ctx)
+    return this.authService.signIn(ctx)
   }
 
   //**************** Sign OUt *********************/

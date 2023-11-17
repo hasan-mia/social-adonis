@@ -7,8 +7,8 @@ export default class AuthQuery {
   }
 
   //**************** Sign In *********************/
-  public async signin(fields: {}): Promise<User | null> {
-    return User.query().where(fields).first()
+  public async signin(field: string): Promise<User | null> {
+    return User.query().where('email', field).orWhere('username', field).first()
   }
 
   //**************** Usser info ******************/

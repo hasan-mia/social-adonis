@@ -15,6 +15,7 @@ export default class AuthValidator {
     const userSchema = schema.create({
       email: schema.string({}, [
         rules.normalizeEmail({}),
+        rules.email(),
         rules.unique({ table: 'users', column: 'email' }),
       ]),
       password: schema.string([rules.minLength(8), rules.maxLength(16)]),
