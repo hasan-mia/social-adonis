@@ -7,7 +7,7 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
       table.uuid('uuid').unique()
-      table.string('username').unique()
+      table.string('username').nullable().unique()
       table.string('email').unique()
       table.string('password')
       table.integer('type').defaultTo(0) // 0 -> user, 1 -> vendor, 2-> editor, 3->admin, 4-> uper admin

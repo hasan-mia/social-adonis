@@ -20,10 +20,10 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.post('register', 'AuthController.register')
-Route.post('login', 'AuthController.login')
-Route.get('logout', 'AuthController.logout')
+//******************* Social API Start **********************/
+
+import 'App/Controllers/Http/Social/Auth/Auth'
 
 Route.get('/', async () => {
-  return { hello: 'world' }
+  return 'Server is running'
 })
