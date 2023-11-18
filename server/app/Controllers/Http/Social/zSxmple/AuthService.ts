@@ -51,7 +51,7 @@ export default class AuthService {
       // Create session
       await ctx.auth.use('web').attempt(uid, password)
 
-      return ctx.response.status(200).send({ message: 'Sign-in successful' })
+      return ctx.response.status(201).send({ message: 'Sign-in successful' })
     } catch (error) {
       return ctx.response.status(422).send({ errors: error.messages })
     }
