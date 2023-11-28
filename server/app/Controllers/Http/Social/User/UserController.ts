@@ -23,7 +23,7 @@ export default class UserController {
 
   //**************** Update Info *********************/
   public async updateinfo(ctx: HttpContextContract) {
-    const payload = await this.userValidator.userSchema(ctx)
-    return this.userService.updateinfo(ctx, payload)
+    // const payload = await this.userValidator.userSchema(ctx)
+    return this.userService.updateinfo(ctx)
   }
 }

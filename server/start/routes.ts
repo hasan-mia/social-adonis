@@ -23,6 +23,7 @@ import Route from '@ioc:Adonis/Core/Route'
 //******************* Social API Start **********************/
 
 import 'App/Controllers/Http/Social/Auth/Auth'
+import 'App/Controllers/Http/Social/User/User'
 
 Route.get('/', async () => {
   return 'Server is running'

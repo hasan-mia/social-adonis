@@ -73,9 +73,9 @@ declare module '@ioc:Adonis/Addons/Auth' {
       config: SessionGuardConfig<'user'>
       client: SessionClientContract<'user'>
     }
-    api: {
-      implementation: OATGuardContract<'user', 'api'>
-      config: OATGuardConfig<'user'>
-    }
+    // api: {
+    //   implementation: OATGuardContract<'user', 'api'>
+    //   config: OATGuardConfig<'user'>
+    // }
   }
 }

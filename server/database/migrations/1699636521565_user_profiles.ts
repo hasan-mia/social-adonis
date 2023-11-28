@@ -13,15 +13,12 @@ export default class extends BaseSchema {
         .inTable('users')
         .onDelete('CASCADE')
         .onUpdate('CASCADE')
-      table.string('first_name')
-      table.string('last_name')
+      table.string('first_name').nullable()
+      table.string('last_name').nullable()
       table.string('phone').unique()
-      table.string('birth_date')
-      table.integer('relationship').defaultTo(0) // - -> single, 1 -> In a relation, 2-> married, 3-> divorced
-      table.boolean('verify').defaultTo(false)
-      table.boolean('active').defaultTo(true)
-      table.boolean('online').defaultTo(false)
-
+      table.string('profile').nullable()
+      table.string('cover').nullable()
+      table.string('birth_date').nullable()
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

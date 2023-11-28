@@ -1,37 +1,67 @@
+import User from 'App/Models/User'
 import UserProfile from 'App/Models/UserProfile'
 
 export default class UserQuery {
   //**************** All User *********************/
-  public async alluser(): Promise<UserProfile[] | null> {
-    const allUser = await UserProfile.query()
-      .preload('user', (query) => query.select(['uuid', 'username', 'email', 'type']))
+  public async alluser(): Promise<User[] | null> {
+    const allUser = await User.query()
       .select([
-        'userId',
-        'firstName',
-        'lastName',
-        'phone',
-        'birthDate',
-        'relationship',
+        'uuid',
+        'email',
+        'username',
         'verify',
         'active',
         'online',
+        'relationship',
         'createdAt',
         'updatedAt',
       ])
+      .preload('userProfile', (query) =>
+        query.select([
+          'firstName',
+          'lastName',
+          'phone',
+          'birthDate',
+          'profile',
+          'cover',
+          'updatedAt',
+        ])
+      )
+      .orderBy('createdAt', 'desc')
 
     return allUser || []
   }
 
   //**************** Usser info ******************/
-  public async userinfo(uuid: string): Promise<UserProfile | null> {
-    const userProfile = await UserProfile.query()
-      .preload('user', (query) => query.select(['id', 'uuid', 'username', 'email', 'type']))
-      .whereHas('user', (query) => {
-        query.where('uuid', uuid)
-      })
-      .first()
+  public async userinfo(uuid: string): Promise<User | null> {
+    const user = await User.query()
+      .where('uuid', uuid)
+      .select([
+        'uuid',
+        'email',
+        'username',
+        'verify',
+        'active',
+        'online',
+        'relationship',
+        'createdAt',
+        'updatedAt',
+      ])
+      .preload('userProfile', (query) =>
+        query.select([
+          'firstName',
+          'lastName',
+          'phone',
+          'birthDate',
+          'profile',
+          'cover',
+          'updatedAt',
+        ])
+      )
 
-    return userProfile || null
+      .firstOrFail()
+
+    return user || null
   }
 
   //**************** Usser info ******************/

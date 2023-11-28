@@ -10,11 +10,8 @@ export default class UserProfile extends BaseModel {
   @column()
   public uuid: string
 
-  @column()
+  @column({ columnName: 'user_id' })
   public userId: string
-
-  @belongsTo(() => User, { foreignKey: 'userId' })
-  public user: BelongsTo<typeof User>
 
   @column()
   public firstName: string
@@ -29,22 +26,20 @@ export default class UserProfile extends BaseModel {
   public birthDate: string
 
   @column()
-  public relationship: number
+  public profile: string
 
   @column()
-  public verify: boolean
-
-  @column()
-  public active: boolean
-
-  @column()
-  public online: boolean
+  public cover: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  // relation
+  @belongsTo(() => User, { localKey: 'uuid', foreignKey: 'userId' })
+  public user: BelongsTo<typeof User>
 
   // Add this method to generate uuid before creating a userProfile
   @beforeCreate()

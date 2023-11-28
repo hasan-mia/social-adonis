@@ -17,8 +17,7 @@ export default class AuthService {
       // check if user created faild
       if (!user) return ctx.response.badRequest({ errors: [{ message: 'Invalid credentials' }] })
 
-      // user login
-      await ctx.auth.login(user)
+      await ctx.auth.use('web').attempt(user.email, user.password)
 
       // send response
       return ctx.response.status(201).send({
@@ -46,12 +45,10 @@ export default class AuthService {
         return ctx.response.badRequest({ errors: [{ message: 'Wrong password' }] })
       }
 
-      // const token = await ctx.auth.use('api').attempt(user.email, user.uuid)
-
       // Create session
       await ctx.auth.use('web').attempt(uid, password)
 
-      return ctx.response.status(200).send({ message: 'Sign-in successful' })
+      return ctx.response.status(200).send({ message: 'Sign-in successful', data: user })
     } catch (error) {
       return ctx.response.status(422).send({ errors: error.messages })
     }

@@ -29,9 +29,8 @@ export default class UserService {
   //**************** User Info *********************/
   public async userinfo(ctx: HttpContextContract) {
     try {
-      const { uuid } = ctx.request.params()
+      const uuid = ctx.request.input('uuid')
       const userinfo = await this.userQuery.userinfo(uuid)
-
       // Verify user
       if (!userinfo)
         return ctx.response.status(401).send({ errors: [{ message: 'User not found' }] })
@@ -43,13 +42,25 @@ export default class UserService {
   }
 
   //**************** Update user Info *********************/
-  public async updateinfo(ctx: HttpContextContract, payload: any) {
+  public async updateinfo(ctx: HttpContextContract) {
     try {
-      // crete user
-      const users = await this.userQuery.updateinfo(payload)
+      const uuid = ctx.request.input('uuid')
+      const data = ctx.request.only([
+        'first_name',
+        'last_name',
+        'phone',
+        'birth_date',
+        'relationship',
+      ])
+      const exitUser = await this.userQuery.userinfo(uuid)
+      if (!exitUser)
+        return ctx.response.status(401).send({ errors: [{ message: 'User not found' }] })
+
+      // update info
+      const updatedInfo = await this.userQuery.updateinfo(data)
 
       // check if user created faild
-      if (!users) return ctx.response.badRequest({ errors: [{ message: 'Update failed' }] })
+      if (!updatedInfo) return ctx.response.badRequest({ errors: [{ message: 'Update failed' }] })
 
       return ctx.response.status(201).send({ message: 'Update success' })
     } catch (error) {

@@ -1,7 +1,8 @@
 import Hash from '@ioc:Adonis/Core/Hash'
-import { BaseModel, beforeCreate, beforeSave, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, HasOne, beforeCreate, beforeSave, column, hasOne } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
 import { v4 as uuidv4 } from 'uuid'
+import UserProfile from './UserProfile'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -25,6 +26,18 @@ export default class User extends BaseModel {
   @column({ columnName: 'remember_me_token' })
   public rememberMeToken: string | null
 
+  @column()
+  public relationship: number
+
+  @column()
+  public verify: boolean
+
+  @column()
+  public active: boolean
+
+  @column()
+  public online: boolean
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
@@ -36,6 +49,13 @@ export default class User extends BaseModel {
   public static async generateUuid(user: User) {
     user.uuid = uuidv4()
   }
+
+  // relation
+  @hasOne(() => UserProfile, {
+    localKey: 'uuid',
+    foreignKey: 'userId',
+  })
+  public userProfile: HasOne<typeof UserProfile>
 
   // Add this method to hash the password before inserting or updating a user
   @beforeSave()

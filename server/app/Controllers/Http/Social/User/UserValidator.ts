@@ -4,29 +4,24 @@ export default class UserValidator {
   public messages = {
     'username.unique': 'Username already in use',
     'username.exists': 'Invalid username',
-    'email.required': 'Email is required',
     'email.unique': 'Email already in use',
     'email.exists': 'Invalid email address',
-    'password.minLength': 'Password must be at least 6 characters long',
-    'password.maxLength': 'Password must be at less or equal 16 characters long',
   }
   //**************** update info *********************/
   public async userSchema(ctx: HttpContextContract) {
     const userSchema = schema.create({
-      email: schema.string({}, [
-        rules.normalizeEmail({}),
-        rules.email(),
-        rules.unique({ table: 'users', column: 'email' }),
+      username: schema.string({}, [
+        rules.unique({ table: 'users', column: 'username', whereNot: { uuid: ctx.params.uuid } }),
       ]),
-      password: schema.string([rules.minLength(8), rules.maxLength(16)]),
+      email: schema.string({}, [
+        rules.unique({ table: 'users', column: 'email', whereNot: { uuid: ctx.params.uuid } }),
+      ]),
     })
     const msg = {
-      'email.required': 'Email is required',
-      'email.unique': 'Email is already in use',
-      'email.email': 'Invalid email address',
-      'password.required': 'Password is required',
-      'password.minLength': 'Password must be at least 8 charecters long',
-      'password.maxLength': 'Password must be at less or equal 16 charecters long',
+      'username.unique': 'Username already in use',
+      'username.exists': 'Invalid username',
+      'email.unique': 'Email already in use',
+      'email.exists': 'Invalid email address',
     }
     return await ctx.request.validate({ schema: userSchema, messages: msg })
   }
