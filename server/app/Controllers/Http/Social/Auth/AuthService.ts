@@ -1,4 +1,3 @@
-import Hash from '@ioc:Adonis/Core/Hash'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import AuthQuery from './AuthQuery'
 
@@ -14,10 +13,8 @@ export default class AuthService {
       // crete user
       const user = await this.authQuery.signup(payload)
 
-      // check if user created faild
-      if (!user) return ctx.response.badRequest({ errors: [{ message: 'Invalid credentials' }] })
-
-      await ctx.auth.use('web').attempt(user.email, user.password)
+      // crete session
+      await ctx.auth.login(user)
 
       // send response
       return ctx.response.status(201).send({
@@ -35,22 +32,22 @@ export default class AuthService {
       const user = await this.authQuery.signin(uid)
 
       // Verify user
-      if (!user)
+      if (user) {
+        // const passwordVerified = await Hash.verify(user.password, password)
+
+        // create sesssion
+        await ctx.auth.use('web').attempt(uid, password)
+
+        return ctx.response.status(200).send({ message: 'Sign-in successful', data: user })
+      } else {
         return ctx.response
           .status(401)
           .send({ errors: [{ message: 'Email or username not found' }] })
-
-      // Verify password
-      if (!(await Hash.verify(user.password, password))) {
-        return ctx.response.badRequest({ errors: [{ message: 'Wrong password' }] })
       }
-
-      // Create session
-      await ctx.auth.use('web').attempt(uid, password)
-
-      return ctx.response.status(200).send({ message: 'Sign-in successful', data: user })
     } catch (error) {
-      return ctx.response.status(422).send({ errors: error.messages })
+      return ctx.response
+        .status(401)
+        .send({ errors: [{ message: error.responseText.split(': ')[1] }] })
     }
   }
 }

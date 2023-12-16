@@ -25,10 +25,9 @@ export default class AuthController {
 
   //**************** Sign OUt *********************/
   public async signout(ctx: HttpContextContract) {
-    // logout the user
     await ctx.auth.logout()
-
+    return ctx.response.status(200).send({ message: 'Sign-out successful' })
     // redirect to login page
-    return ctx.response.redirect().toRoute('http://localhost:3000')
+    // return ctx.response.redirect().toRoute('http://localhost:3000')
   }
 }
